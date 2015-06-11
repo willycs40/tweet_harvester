@@ -55,3 +55,9 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# credentials
+credentials.py
+
+# ipython
+.ipynb_checkpoints/
