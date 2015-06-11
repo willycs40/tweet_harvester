@@ -1,10 +1,17 @@
 import HTMLParser
 import re
 from nltk.tokenize import RegexpTokenizer
+from nltk.stem.snowball import SnowballStemmer
 from pandas import DataFrame
 
+stemmer = SnowballStemmer("english")
+tokenizer = RegexpTokenizer(r'#?\w+')
+h = HTMLParser.HTMLParser()
+# compile a regex to find urls
+url_regex = re.compile(r"(?P<url>https?://[^\s]+)")
+
 def tweets_to_list(searched_tweets):
-    h = HTMLParser.HTMLParser()
+    
     formatted_tweets = []
 
     for t in searched_tweets:
@@ -66,17 +73,14 @@ def tweets_to_entity_list(searched_tweets):
     
     return entities_list, column_list
     
-def removeURL(content_string):
-    # compile a regex to find urls
-    url_regex = re.compile(r"(?P<url>https?://[^\s]+)")
-
+def remove_urls(content_string):
     # replace any urls with blank
     return url_regex.sub("",content_string)
 
-def applyWords(group):
+def pivot_words(group):
     # define tokenizer to break strings into words (allow hashtags, a-Z0-9)
     # todo: prevent number-only words being tokenized
-    tokenizer = RegexpTokenizer(r'#?\w+')
+
     # for each row, return a row per token, with sequence number
 
     row = group.irow(0)
